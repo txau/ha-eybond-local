@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "source_key": "community_quky_anenji_12kw_ges_7530",
+  "kind": "third_party_impl",
+  "title": "Community ESPHome Modbus map for Anenji/Sumry GES 0x7530 family",
+  "reference": "https://github.com/quky/Anenji-12KW-48V-Hybrid-split-phas",
+  "captured_at": "2026-10-01",
+  "visibility": "public",
+  "summary_publishable": true,
+  "summary": "Public ESPHome configuration used by GES48120-class owners maps holding register 0x7530 to battery voltage with multiply 0.1, 0x7531 to signed battery current with multiply 0.1, and 0x7532 to battery SOC percent. DIY Solar Power Forum reports confirm 0x7530-range holding registers on GES48120M250-500P. Live confirmation on additional units remains pending.",
+  "assertions": [
+    "register_map",
+    "telemetry_validation"
+  ]
+}

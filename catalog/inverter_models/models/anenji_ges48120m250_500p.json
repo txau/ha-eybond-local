@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "model_key": "anenji_ges48120m250_500p",
+  "manufacturer": "Anenji",
+  "model": "GES48120M250-500P",
+  "aliases": [
+    "Anenji 12kW Split-Phase GES48120",
+    "Sumry GES48120M250-500P"
+  ],
+  "lifecycle": "experimental",
+  "variants": [
+    {
+      "variant_key": "sumry_ges_7530",
+      "label": "Sumry/GES holding-register map at 0x7530 (community)",
+      "device_descriptor_keys": [
+        "sumry_ges_7530_family"
+      ],
+      "known_firmware": []
+    }
+  ],
+  "validation": {
+    "hardware": "reported",
+    "telemetry": "partial",
+    "controls": "none"
+  },
+  "coverage": {
+    "runtime_control_surface": "none",
+    "smartess_control_surface": "unknown",
+    "vendor_register_map": "partial",
+    "notes": [
+      "Initial read-only surface exposes battery voltage, current, and SOC from community ESPHome mappings at holding registers 0x7530-0x7532 (0.1 V / 0.1 A / %).",
+      "Detection uses plausibility anchors on raw battery voltage (400-700) and SOC (0-100).",
+      "Live confirmation against an Anenji GES48120M250-500P LCD/meter is still required before promoting beyond experimental."
+    ]
+  },
+  "known_limitations": [
+    "Community map only; no manufacturer PDF committed yet.",
+    "No controls are exposed.",
+    "Hardware read-back confirmation is pending."
+  ],
+  "knowledge_summary": "Anenji GES48120M250-500P is a 48 V split-phase hybrid reported behind EyeBond/SmartValue collectors. Community ESPHome mappings for the Sumry/GES holding-register block at 0x7530 define battery voltage (x0.1 V), current (x0.1 A), and SOC. This experimental catalog entry binds a read-only modbus_catalog surface to that block so local detection can prefer it over unrelated SRNE/SMG probes once the anchors match.",
+  "source_keys": [
+    "community_quky_anenji_12kw_ges_7530"
+  ]
+}

@@ -914,8 +914,16 @@
      "cost": 2,
      "optional": true,
      "evidence_fields": [
-      {"key": "identity.hopewind_rated_kw", "source_key": "hopewind_rated_kw", "register": 40646},
-      {"key": "identity.hopewind_rated_voltage", "source_key": "hopewind_rated_voltage", "register": 40647}
+      {
+       "key": "identity.hopewind_rated_kw",
+       "source_key": "hopewind_rated_kw",
+       "register": 40646
+      },
+      {
+       "key": "identity.hopewind_rated_voltage",
+       "source_key": "hopewind_rated_voltage",
+       "register": 40647
+      }
      ]
     },
     {
@@ -927,8 +935,39 @@
      "cost": 2,
      "optional": true,
      "evidence_fields": [
-      {"key": "identity.hopewind_switch", "source_key": "hopewind_switch", "register": 40546},
-      {"key": "identity.hopewind_state", "source_key": "hopewind_state", "register": 40547}
+      {
+       "key": "identity.hopewind_switch",
+       "source_key": "hopewind_switch",
+       "register": 40546
+      },
+      {
+       "key": "identity.hopewind_state",
+       "source_key": "hopewind_state",
+       "register": 40547
+      }
+     ]
+    },
+    {
+     "key": "modbus_catalog.sumry_ges_battery_identity",
+     "kind": "modbus_read",
+     "register": 30000,
+     "count": 3,
+     "function": 3,
+     "cost": 1,
+     "optional": true,
+     "evidence_fields": [
+      {
+       "key": "identity.sumry_ges_battery_voltage_raw",
+       "source_key": "sumry_ges_battery_voltage_raw",
+       "register": 30000,
+       "words": 1
+      },
+      {
+       "key": "identity.sumry_ges_battery_soc_raw",
+       "source_key": "sumry_ges_battery_soc_raw",
+       "register": 30002,
+       "words": 1
+      }
      ]
     }
    ],
@@ -942,8 +981,23 @@
  ],
  "support_capture_policies": {
   "hopewind_0237": {
-   "ranges": [[40500, 71], [40571, 29], [40600, 51]],
-   "notes": ["Manufacturer Hopewind protocol 567 / 0237: read-only FC03 evidence; identity block can contain a serial number."]
+   "ranges": [
+    [
+     40500,
+     71
+    ],
+    [
+     40571,
+     29
+    ],
+    [
+     40600,
+     51
+    ]
+   ],
+   "notes": [
+    "Manufacturer Hopewind protocol 567 / 0237: read-only FC03 evidence; identity block can contain a serial number."
+   ]
   },
   "smg_protocol_1": {
    "ranges": [
@@ -1193,11 +1247,15 @@
   },
   "eybond_short_ascii": {
    "ranges": [],
-   "notes": ["Bounded read-only MP/Q1/MD/F/RB FC4 evidence only. F/RB are optional runtime reads, not detection prerequisites. No raw UART, auxiliary query or write command."]
+   "notes": [
+    "Bounded read-only MP/Q1/MD/F/RB FC4 evidence only. F/RB are optional runtime reads, not detection prerequisites. No raw UART, auxiliary query or write command."
+   ]
   },
   "eybond_09c1": {
    "ranges": [],
-   "notes": ["Bounded read-only Q1/QF/PV?/F/G? FC4 capture. G? and PV energy remain raw evidence; no writes or inferred retail identity."]
+   "notes": [
+    "Bounded read-only Q1/QF/PV?/F/G? FC4 capture. G? and PV energy remain raw evidence; no writes or inferred retail identity."
+   ]
   },
   "eybond_g_ascii": {
    "ranges": [],
@@ -1323,7 +1381,7 @@
     ]
    ],
    "notes": [
-    "Deye single-phase LV storage/hybrid map: everything is holding registers (function 3 only; writes use function 16). 32-bit counters are low-word-first; temperatures are (raw-1000)*0.1 degC. Registers 150-218 are the STORAGE meaning of an address space that string inverters reuse differently — device type (register 0) must be 0x0300. Modbus RTU 9600, slave address in register 1 (default 1)."
+    "Deye single-phase LV storage/hybrid map: everything is holding registers (function 3 only; writes use function 16). 32-bit counters are low-word-first; temperatures are (raw-1000)*0.1 degC. Registers 150-218 are the STORAGE meaning of an address space that string inverters reuse differently \u2014 device type (register 0) must be 0x0300. Modbus RTU 9600, slave address in register 1 (default 1)."
    ]
   },
   "deye_3ph_high_80kw": {
@@ -1426,6 +1484,17 @@
    ],
    "notes": [
     "GM6200 Protocol 2 identity, active priorities and clock/energy windows; do not inherit OP2 or Protocol 3-6 addresses."
+   ]
+  },
+  "sumry_ges_7530": {
+   "ranges": [
+    [
+     30000,
+     3
+    ]
+   ],
+   "notes": [
+    "Community Sumry/GES map at 0x7530: battery voltage/current/SOC holding registers (FC03). Evidence-only until live confirmation."
    ]
   }
  },
@@ -1814,6 +1883,17 @@
    "support_capture_policy": "aohai_fsa"
   },
   {
+   "key": "sumry_ges_7530_read_only",
+   "protocol_key": "modbus_catalog",
+   "driver_key": "modbus_catalog",
+   "variant_key": "sumry_ges_7530",
+   "profile_name": "",
+   "register_schema_name": "sumry_ges_7530/base.json",
+   "tier": "partial",
+   "read_only": true,
+   "support_capture_policy": "sumry_ges_7530"
+  },
+  {
    "key": "growatt_spf_untested",
    "protocol_key": "modbus_catalog",
    "driver_key": "modbus_catalog",
@@ -1961,7 +2041,7 @@
    },
    "provenance": {
     "sources": [
-     "corpus:own-device …9645 (16 captures, 2026-04..06)",
+     "corpus:own-device \u20269645 (16 captures, 2026-04..06)",
      "identity anchors: reg171 device_type/model_code=0x1E00, reg184 protocol/layout=1, reg643 rated_power=6200",
      "commercial name Sandisolar SD-HYM-4862HWP is source-backed; local SMG registers expose only the generic fingerprint"
     ],
@@ -2112,7 +2192,7 @@
    },
    "provenance": {
     "sources": [
-     "corpus:donor …5865 (5 captures)"
+     "corpus:donor \u20265865 (5 captures)"
     ],
     "confidence": "capture-derived"
    }
@@ -2238,7 +2318,7 @@
    },
    "provenance": {
     "sources": [
-     "corpus:donor …4544 (3 captures)",
+     "corpus:donor \u20264544 (3 captures)",
      "catalog-migration:anenji_anj_11kw_48v_wifi_p"
     ],
     "confidence": "capture-derived"
@@ -2515,7 +2595,7 @@
    },
    "provenance": {
     "sources": [
-     "corpus:donor …5481 (single-output capture, 2026-06-12)",
+     "corpus:donor \u20265481 (single-output capture, 2026-06-12)",
      "fw 3700_A6250424v1 (reg626 hex == model_code 14080)",
      "donor ran smg_modbus.json profile bound as SMG 6200 (same layout 1 as the verified smg_6200): full SMG control set read back correct values (developer-witnessed 2026-06-12)"
     ],
@@ -2586,7 +2666,7 @@
    "provenance": {
     "sources": [
      "github:issue#3 Aninerel ANL-4200T-24L-W-PRO",
-     "corpus:donor …GVB2 (3 captures, 2026-06-15)",
+     "corpus:donor \u2026GVB2 (3 captures, 2026-06-15)",
      "fingerprint layout=11 model_code=30723 rated_power=4200"
     ],
     "confidence": "capture-derived-partial"
@@ -2660,7 +2740,7 @@
    "provenance": {
     "sources": [
      "github:issue#8 Anenji ANJ-6200-48PL",
-     "corpus:donor …57E (capture, 2026-06-15)",
+     "corpus:donor \u202657E (capture, 2026-06-15)",
      "fingerprint layout=2 model_code=8960 rated_power=6200",
      "github:issue#51 register 301 enum correction; ANJ-6200-48PL manual F1-01 and GM6200 Communication Protocol 2",
      "SUB/SBU/SUF/ZEC selection user-confirmed in issue #51 on 2026-09-29; grid-export/CT operation not validated; remaining historical SMG 6200 surface unchanged"
@@ -2904,8 +2984,14 @@
    "model_name": "MUST PV3300",
    "priority": 220,
    "anchors": [
-    {"key": "protocol.protocol_id", "equals": "MUST_PV_PH18"},
-    {"key": "identity.model_number", "equals": "PV3300"}
+    {
+     "key": "protocol.protocol_id",
+     "equals": "MUST_PV_PH18"
+    },
+    {
+     "key": "identity.model_number",
+     "equals": "PV3300"
+    }
    ],
    "provenance": {
     "sources": [
@@ -3130,13 +3216,47 @@
    "priority": 110,
    "family_fallback": true,
    "anchors": [
-    {"key": "identity.hopewind_rated_kw", "min": 3, "max": 80, "cost": 2},
-    {"key": "identity.hopewind_rated_voltage", "min": 100, "max": 800, "cost": 2},
-    {"key": "identity.hopewind_switch", "one_of": [0, 1], "cost": 2},
-    {"key": "identity.hopewind_state", "one_of": [1, 2, 4, 8, 16, 32, 64, 128, 256], "cost": 2}
+    {
+     "key": "identity.hopewind_rated_kw",
+     "min": 3,
+     "max": 80,
+     "cost": 2
+    },
+    {
+     "key": "identity.hopewind_rated_voltage",
+     "min": 100,
+     "max": 800,
+     "cost": 2
+    },
+    {
+     "key": "identity.hopewind_switch",
+     "one_of": [
+      0,
+      1
+     ],
+     "cost": 2
+    },
+    {
+     "key": "identity.hopewind_state",
+     "one_of": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32,
+      64,
+      128,
+      256
+     ],
+     "cost": 2
+    }
    ],
    "provenance": {
-    "sources": ["manufacturer Hopewind protocol 567 / 0237 V100B002D000", "github:issue#23 three successful local FC03 blocks"],
+    "sources": [
+     "manufacturer Hopewind protocol 567 / 0237 V100B002D000",
+     "github:issue#23 three successful local FC03 blocks"
+    ],
     "confidence": "documented-with-register-capture"
    }
   },
@@ -3175,6 +3295,34 @@
    "provenance": {
     "sources": [
      "community ESPHome map: Sandisolar-Aohai-FSA-Series-Home-Assistant-integration-via-RS485 (Modbus RTU 9600 8N1, slave 1)"
+    ],
+    "confidence": "third-party-map-unconfirmed"
+   }
+  },
+  {
+   "entry_key": "sumry_ges_7530_family",
+   "surface_key": "sumry_ges_7530_read_only",
+   "model_name": "Sumry/GES Modbus (0x7530)",
+   "priority": 109,
+   "family_fallback": true,
+   "anchors": [
+    {
+     "key": "identity.sumry_ges_battery_voltage_raw",
+     "min": 400,
+     "max": 700,
+     "cost": 1
+    },
+    {
+     "key": "identity.sumry_ges_battery_soc_raw",
+     "min": 0,
+     "max": 100,
+     "cost": 1
+    }
+   ],
+   "provenance": {
+    "sources": [
+     "community ESPHome map: quky/Anenji-12KW-48V-Hybrid-split-phas (0x7530 battery V *0.1, 0x7531 current *0.1, 0x7532 SOC %)",
+     "DIY Solar Power Forum: GES48120M250-500P owners confirm 0x7530-range holding registers"
     ],
     "confidence": "third-party-map-unconfirmed"
    }
@@ -3264,7 +3412,7 @@
    ],
    "provenance": {
     "sources": [
-     "Deye Modbus RTU protocol V1.18 (storage/string/micro) and V1.19 (one-phase) — same register map; SUN-xK-SG04LP1-class single-phase LV hybrids. Device type 0x0300 (768) selects the storage meaning of the overloaded 150-218 register area; rated power anchor reads the low word of the 0.1 W u32 (covers units up to 6.5 kW)."
+     "Deye Modbus RTU protocol V1.18 (storage/string/micro) and V1.19 (one-phase) \u2014 same register map; SUN-xK-SG04LP1-class single-phase LV hybrids. Device type 0x0300 (768) selects the storage meaning of the overloaded 150-218 register area; rated power anchor reads the low word of the 0.1 W u32 (covers units up to 6.5 kW)."
     ],
     "confidence": "datasheet-unconfirmed"
    }

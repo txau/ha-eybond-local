@@ -1,0 +1,58 @@
+{
+  "schema_key": "sumry_ges_7530",
+  "title": "Sumry / GES Modbus map at 0x7530 (community)",
+  "driver_key": "modbus_catalog",
+  "protocol_family": "sumry_ges_7530",
+  "blocks": [
+    {
+      "key": "battery",
+      "start": 30000,
+      "count": 3
+    }
+  ],
+  "enum_tables": {},
+  "spec_sets": {
+    "runtime": [
+      {
+        "key": "battery_voltage",
+        "register": 30000,
+        "divisor": 10,
+        "decimals": 1
+      },
+      {
+        "key": "battery_current",
+        "register": 30001,
+        "signed": true,
+        "divisor": 10,
+        "decimals": 1
+      },
+      {
+        "key": "battery_percent",
+        "register": 30002
+      }
+    ]
+  },
+  "measurement_descriptions": [
+    {
+      "key": "battery_voltage",
+      "name": "Battery Voltage",
+      "unit": "V",
+      "device_class": "voltage",
+      "state_class": "measurement"
+    },
+    {
+      "key": "battery_current",
+      "name": "Battery Current",
+      "unit": "A",
+      "device_class": "current",
+      "state_class": "measurement"
+    },
+    {
+      "key": "battery_percent",
+      "name": "Battery Percent",
+      "unit": "%",
+      "device_class": "battery",
+      "state_class": "measurement"
+    }
+  ]
+}

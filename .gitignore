@@ -31,3 +31,4 @@ venv/
 
 # OS/editor noise
 .DS_Store
+tools/deploy.env
