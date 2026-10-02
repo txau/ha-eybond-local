@@ -154,6 +154,18 @@ class SumryGes7530CatalogTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(values["environment_temperature"], 27.5)
         self.assertEqual(values["internal_fan_duty"], 35)
 
+    async def test_read_values_derives_mains_power_from_voltage_and_current(self) -> None:
+        driver = ModbusCatalogDriver()
+        transport = _transport()
+        inverter = await driver.async_probe(transport, _target())
+        assert inverter is not None
+
+        values = _full_values(await driver.async_read_values(transport, inverter))
+        # 121.0 V * 3.0 A = 363 W; 120.8 V * 2.5 A = 302 W
+        self.assertEqual(values["mains_power_l1"], 363)
+        self.assertEqual(values["mains_power_l2"], 302)
+        self.assertEqual(values["mains_power_total"], 665)
+
     async def test_probe_rejects_out_of_envelope_battery_voltage(self) -> None:
         registers = _ges_holding_registers()
         registers[30000] = 1200  # 120.0 V — outside 48 V GES envelope

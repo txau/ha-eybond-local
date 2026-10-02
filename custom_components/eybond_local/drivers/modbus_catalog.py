@@ -52,6 +52,7 @@ from .capability_codec import (
 )
 from .catalog_probe import async_walk_detection_dag
 from .support_diagnostics import capture_support_reads
+from .sumry_ges_derived import derive_sumry_ges_runtime_values
 
 logger = logging.getLogger(__name__)
 
@@ -213,6 +214,8 @@ class ModbusCatalogDriver(ModbusWriteErrorMixin, InverterDriver):
         )
         session = self._session(transport, inverter.probe_target)
         values = await read_spec_set_values(session, schema, ascii_style="printable")
+        if schema.key == "sumry_ges_7530":
+            values.update(derive_sumry_ges_runtime_values(values))
         control_updates = await _read_control_settings(
             session,
             schema,

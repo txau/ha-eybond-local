@@ -400,6 +400,27 @@
       "state_class": "measurement"
     },
     {
+      "key": "mains_power_l1",
+      "name": "Mains Power L1",
+      "unit": "W",
+      "device_class": "power",
+      "state_class": "measurement"
+    },
+    {
+      "key": "mains_power_l2",
+      "name": "Mains Power L2",
+      "unit": "W",
+      "device_class": "power",
+      "state_class": "measurement"
+    },
+    {
+      "key": "mains_power_total",
+      "name": "Mains Power Total",
+      "unit": "W",
+      "device_class": "power",
+      "state_class": "measurement"
+    },
+    {
       "key": "bus_voltage_positive",
       "name": "Bus Voltage Positive",
       "unit": "V",
