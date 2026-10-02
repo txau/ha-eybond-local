@@ -34,6 +34,9 @@ def _ges_holding_registers() -> dict[int, int]:
         30000: 541,  # 54.1 V
         30001: 0xFF9C,  # -10.0 A
         30002: 96,
+        30003: 480,  # W charge power
+        30004: 85,  # 8.5 A AC charge
+        30005: 120,  # 12.0 A PV charge
         # PV 0x753B..
         30011: 3205,  # 320.5 V
         30012: 45,  # 4.5 A
@@ -58,8 +61,10 @@ def _ges_holding_registers() -> dict[int, int]:
         30036: 900,  # VA
         30037: 10,  # %
         30038: 0,
-        # Load total 0x755E
+        # Load totals 0x755E..
         30046: 1860,  # W
+        30047: 2000,  # VA
+        30048: 15,  # %
         # Mains 0x756A..
         30058: 1210,  # 121.0 V
         30059: 30,  # 3.0 A
@@ -81,6 +86,10 @@ def _ges_holding_registers() -> dict[int, int]:
         # CT grid 0x7584..
         30084: 500,  # W
         30085: 450,  # W
+        # Status 0x7594..
+        30100: 1,
+        30101: 1,
+        30102: 2,
     }
 
 
@@ -116,6 +125,22 @@ class SumryGes7530CatalogTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(values["battery_voltage"], 54.1)
         self.assertEqual(values["battery_current"], -10.0)
         self.assertEqual(values["battery_percent"], 96)
+
+    async def test_read_values_decodes_charge_load_totals_and_status(self) -> None:
+        driver = ModbusCatalogDriver()
+        transport = _transport()
+        inverter = await driver.async_probe(transport, _target())
+        assert inverter is not None
+
+        values = _full_values(await driver.async_read_values(transport, inverter))
+        self.assertEqual(values["battery_charge_power"], 480)
+        self.assertEqual(values["ac_charging_current"], 8.5)
+        self.assertEqual(values["pv_charge_current"], 12.0)
+        self.assertEqual(values["output_apparent_power_total"], 2000)
+        self.assertEqual(values["load_percentage_total"], 15)
+        self.assertEqual(values["power_on_status"], 1)
+        self.assertEqual(values["output_status"], 1)
+        self.assertEqual(values["charging_status"], 2)
 
     async def test_read_values_decodes_pv_load_and_mains(self) -> None:
         driver = ModbusCatalogDriver()
