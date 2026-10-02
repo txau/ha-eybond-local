@@ -10,6 +10,7 @@
     {"key": "output_l2", "start": 30032, "count": 7},
     {"key": "load_total", "start": 30046, "count": 1},
     {"key": "mains", "start": 30058, "count": 5},
+    {"key": "line_power", "start": 30068, "count": 2},
     {"key": "temps_bus_fan", "start": 30071, "count": 8},
     {"key": "grid_ct", "start": 30084, "count": 2}
   ],
@@ -112,7 +113,7 @@
         "decimals": 1
       },
       {
-        "key": "output_active_power_l2",
+        "key": "load_power_l2",
         "register": 30035,
         "signed": true
       },
@@ -161,6 +162,16 @@
         "signed": true,
         "divisor": 10,
         "decimals": 1
+      },
+      {
+        "key": "mains_power_l1",
+        "register": 30068,
+        "signed": true
+      },
+      {
+        "key": "mains_power_l2",
+        "register": 30069,
+        "signed": true
       },
       {
         "key": "bus_voltage_positive",
@@ -338,8 +349,8 @@
       "state_class": "measurement"
     },
     {
-      "key": "output_active_power_l2",
-      "name": "Output Active Power L2",
+      "key": "load_power_l2",
+      "name": "Load Power L2",
       "unit": "W",
       "device_class": "power",
       "state_class": "measurement"

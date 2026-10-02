@@ -54,7 +54,7 @@ def _ges_holding_registers() -> dict[int, int]:
         30032: 1204,  # 120.4 V
         30033: 70,  # 7.0 A
         30034: 0,
-        30035: 840,  # W
+        30035: 840,  # W load L2
         30036: 900,  # VA
         30037: 10,  # %
         30038: 0,
@@ -66,6 +66,9 @@ def _ges_holding_registers() -> dict[int, int]:
         30060: 5999,  # 59.99 Hz
         30061: 1208,  # 120.8 V
         30062: 25,  # 2.5 A
+        # Line active power 0x7574..
+        30068: 520,  # W L1
+        30069: 480,  # W L2
         # Bus / temps / fan 0x7577..0x757E (30077 unused)
         30071: 3850,  # 385.0 V bus+
         30072: 3845,  # 384.5 V bus-
@@ -130,6 +133,7 @@ class SumryGes7530CatalogTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(values["output_current_l1"], 8.5)
         self.assertEqual(values["output_frequency"], 60.0)
         self.assertEqual(values["load_power_l1"], 1020)
+        self.assertEqual(values["load_power_l2"], 840)
         self.assertEqual(values["load_power_total"], 1860)
         self.assertEqual(values["output_voltage_l2"], 120.4)
         self.assertEqual(values["mains_voltage_l1"], 121.0)
@@ -154,17 +158,16 @@ class SumryGes7530CatalogTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(values["environment_temperature"], 27.5)
         self.assertEqual(values["internal_fan_duty"], 35)
 
-    async def test_read_values_derives_mains_power_from_voltage_and_current(self) -> None:
+    async def test_read_values_decodes_line_active_mains_power(self) -> None:
         driver = ModbusCatalogDriver()
         transport = _transport()
         inverter = await driver.async_probe(transport, _target())
         assert inverter is not None
 
         values = _full_values(await driver.async_read_values(transport, inverter))
-        # 121.0 V * 3.0 A = 363 W; 120.8 V * 2.5 A = 302 W
-        self.assertEqual(values["mains_power_l1"], 363)
-        self.assertEqual(values["mains_power_l2"], 302)
-        self.assertEqual(values["mains_power_total"], 665)
+        self.assertEqual(values["mains_power_l1"], 520)
+        self.assertEqual(values["mains_power_l2"], 480)
+        self.assertEqual(values["mains_power_total"], 1000)
 
     async def test_probe_rejects_out_of_envelope_battery_voltage(self) -> None:
         registers = _ges_holding_registers()

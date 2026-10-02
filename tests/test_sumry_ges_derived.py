@@ -14,24 +14,20 @@ from custom_components.eybond_local.drivers.sumry_ges_derived import (  # noqa: 
 
 
 class SumryGesDerivedTests(unittest.TestCase):
-    def test_derives_signed_mains_power_products(self) -> None:
+    def test_sums_line_active_power_legs(self) -> None:
         derived = derive_sumry_ges_runtime_values(
             {
-                "mains_voltage_l1": 120.0,
-                "mains_current_l1": -2.5,
-                "mains_voltage_l2": 119.5,
-                "mains_current_l2": 1.0,
+                "mains_power_l1": -300,
+                "mains_power_l2": 120,
             }
         )
-        self.assertEqual(derived["mains_power_l1"], -300)
-        self.assertEqual(derived["mains_power_l2"], 120)
         self.assertEqual(derived["mains_power_total"], -180)
 
-    def test_skips_incomplete_legs(self) -> None:
+    def test_skips_when_no_line_power(self) -> None:
         derived = derive_sumry_ges_runtime_values(
             {
                 "mains_voltage_l1": 120.0,
-                "mains_current_l2": 1.0,
+                "mains_current_l1": 2.5,
             }
         )
         self.assertEqual(derived, {})

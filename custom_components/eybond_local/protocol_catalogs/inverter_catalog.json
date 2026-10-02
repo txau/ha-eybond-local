@@ -1513,6 +1513,10 @@
      5
     ],
     [
+     30068,
+     2
+    ],
+    [
      30071,
      8
     ],
@@ -1522,7 +1526,7 @@
     ]
    ],
    "notes": [
-    "Community Sumry/GES map at 0x7530: battery, PV1/2, output/load, mains, bus/temps/fan, and CT grid holding registers (FC03)."
+    "Community Sumry/GES map at 0x7530 plus protocol line active power 0x7574/0x7575: battery, PV, load/output, mains V/I/W, bus/temps/fan, CT grid (FC03)."
    ]
   }
  },
