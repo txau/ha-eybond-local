@@ -66,6 +66,15 @@ def _ges_holding_registers() -> dict[int, int]:
         30060: 5999,  # 59.99 Hz
         30061: 1208,  # 120.8 V
         30062: 25,  # 2.5 A
+        # Bus / temps / fan 0x7577..0x757E (30077 unused)
+        30071: 3850,  # 385.0 V bus+
+        30072: 3845,  # 384.5 V bus-
+        30073: 312,  # 31.2 °C PV
+        30074: 405,  # 40.5 °C inverter
+        30075: 380,  # 38.0 °C transformer
+        30076: 275,  # 27.5 °C environment
+        30077: 0,
+        30078: 35,  # fan duty %
         # CT grid 0x7584..
         30084: 500,  # W
         30085: 450,  # W
@@ -129,6 +138,21 @@ class SumryGes7530CatalogTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(values["mains_voltage_l2"], 120.8)
         self.assertEqual(values["grid_power_l1"], 500)
         self.assertEqual(values["grid_power_l2"], 450)
+
+    async def test_read_values_decodes_temps_bus_and_fan(self) -> None:
+        driver = ModbusCatalogDriver()
+        transport = _transport()
+        inverter = await driver.async_probe(transport, _target())
+        assert inverter is not None
+
+        values = _full_values(await driver.async_read_values(transport, inverter))
+        self.assertEqual(values["bus_voltage_positive"], 385.0)
+        self.assertEqual(values["bus_voltage_negative"], 384.5)
+        self.assertEqual(values["pv_temperature"], 31.2)
+        self.assertEqual(values["inverter_temperature"], 40.5)
+        self.assertEqual(values["transformer_temperature"], 38.0)
+        self.assertEqual(values["environment_temperature"], 27.5)
+        self.assertEqual(values["internal_fan_duty"], 35)
 
     async def test_probe_rejects_out_of_envelope_battery_voltage(self) -> None:
         registers = _ges_holding_registers()

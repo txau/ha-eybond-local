@@ -10,6 +10,7 @@
     {"key": "output_l2", "start": 30032, "count": 7},
     {"key": "load_total", "start": 30046, "count": 1},
     {"key": "mains", "start": 30058, "count": 5},
+    {"key": "temps_bus_fan", "start": 30071, "count": 8},
     {"key": "grid_ct", "start": 30084, "count": 2}
   ],
   "enum_tables": {},
@@ -160,6 +161,50 @@
         "signed": true,
         "divisor": 10,
         "decimals": 1
+      },
+      {
+        "key": "bus_voltage_positive",
+        "register": 30071,
+        "divisor": 10,
+        "decimals": 1
+      },
+      {
+        "key": "bus_voltage_negative",
+        "register": 30072,
+        "divisor": 10,
+        "decimals": 1
+      },
+      {
+        "key": "pv_temperature",
+        "register": 30073,
+        "signed": true,
+        "divisor": 10,
+        "decimals": 1
+      },
+      {
+        "key": "inverter_temperature",
+        "register": 30074,
+        "signed": true,
+        "divisor": 10,
+        "decimals": 1
+      },
+      {
+        "key": "transformer_temperature",
+        "register": 30075,
+        "signed": true,
+        "divisor": 10,
+        "decimals": 1
+      },
+      {
+        "key": "environment_temperature",
+        "register": 30076,
+        "signed": true,
+        "divisor": 10,
+        "decimals": 1
+      },
+      {
+        "key": "internal_fan_duty",
+        "register": 30078
       },
       {
         "key": "grid_power_l1",
@@ -352,6 +397,54 @@
       "name": "Mains Current L2",
       "unit": "A",
       "device_class": "current",
+      "state_class": "measurement"
+    },
+    {
+      "key": "bus_voltage_positive",
+      "name": "Bus Voltage Positive",
+      "unit": "V",
+      "device_class": "voltage",
+      "state_class": "measurement"
+    },
+    {
+      "key": "bus_voltage_negative",
+      "name": "Bus Voltage Negative",
+      "unit": "V",
+      "device_class": "voltage",
+      "state_class": "measurement"
+    },
+    {
+      "key": "pv_temperature",
+      "name": "PV Temperature",
+      "unit": "°C",
+      "device_class": "temperature",
+      "state_class": "measurement"
+    },
+    {
+      "key": "inverter_temperature",
+      "name": "Inverter Temperature",
+      "unit": "°C",
+      "device_class": "temperature",
+      "state_class": "measurement"
+    },
+    {
+      "key": "transformer_temperature",
+      "name": "Transformer Temperature",
+      "unit": "°C",
+      "device_class": "temperature",
+      "state_class": "measurement"
+    },
+    {
+      "key": "environment_temperature",
+      "name": "Environment Temperature",
+      "unit": "°C",
+      "device_class": "temperature",
+      "state_class": "measurement"
+    },
+    {
+      "key": "internal_fan_duty",
+      "name": "Internal Fan Duty",
+      "unit": "%",
       "state_class": "measurement"
     },
     {
