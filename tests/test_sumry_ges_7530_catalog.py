@@ -28,11 +28,47 @@ def _target() -> ProbeTarget:
 
 
 def _ges_holding_registers() -> dict[int, int]:
-    # Community map: 0x7530=30000 V*0.1, 0x7531 current*0.1 signed, 0x7532 SOC%.
+    # Community map samples (quky Anenji 12kW / GES 0x7530 family).
     return {
+        # Battery 0x7530..
         30000: 541,  # 54.1 V
-        30001: 0xFF9C,  # -10.0 A as int16
+        30001: 0xFF9C,  # -10.0 A
         30002: 96,
+        # PV 0x753B..
+        30011: 3205,  # 320.5 V
+        30012: 45,  # 4.5 A
+        30013: 1442,  # W
+        30014: 3180,  # 318.0 V
+        30015: 40,  # 4.0 A
+        30016: 1272,  # W
+        # Output / load L1 0x7548.. (block 30024..30031; 30027/30031 unused)
+        30024: 1205,  # 120.5 V
+        30025: 85,  # 8.5 A
+        30026: 6000,  # 60.00 Hz
+        30027: 0,
+        30028: 1020,  # W L1
+        30029: 1100,  # VA
+        30030: 12,  # %
+        30031: 0,
+        # Output L2 0x7550.. (block 30032..30038; 30034/30038 unused)
+        30032: 1204,  # 120.4 V
+        30033: 70,  # 7.0 A
+        30034: 0,
+        30035: 840,  # W
+        30036: 900,  # VA
+        30037: 10,  # %
+        30038: 0,
+        # Load total 0x755E
+        30046: 1860,  # W
+        # Mains 0x756A..
+        30058: 1210,  # 121.0 V
+        30059: 30,  # 3.0 A
+        30060: 5999,  # 59.99 Hz
+        30061: 1208,  # 120.8 V
+        30062: 25,  # 2.5 A
+        # CT grid 0x7584..
+        30084: 500,  # W
+        30085: 450,  # W
     }
 
 
@@ -68,6 +104,31 @@ class SumryGes7530CatalogTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(values["battery_voltage"], 54.1)
         self.assertEqual(values["battery_current"], -10.0)
         self.assertEqual(values["battery_percent"], 96)
+
+    async def test_read_values_decodes_pv_load_and_mains(self) -> None:
+        driver = ModbusCatalogDriver()
+        transport = _transport()
+        inverter = await driver.async_probe(transport, _target())
+        assert inverter is not None
+
+        values = _full_values(await driver.async_read_values(transport, inverter))
+        self.assertEqual(values["pv1_voltage"], 320.5)
+        self.assertEqual(values["pv1_current"], 4.5)
+        self.assertEqual(values["pv1_power"], 1442)
+        self.assertEqual(values["pv2_voltage"], 318.0)
+        self.assertEqual(values["pv2_power"], 1272)
+        self.assertEqual(values["output_voltage_l1"], 120.5)
+        self.assertEqual(values["output_current_l1"], 8.5)
+        self.assertEqual(values["output_frequency"], 60.0)
+        self.assertEqual(values["load_power_l1"], 1020)
+        self.assertEqual(values["load_power_total"], 1860)
+        self.assertEqual(values["output_voltage_l2"], 120.4)
+        self.assertEqual(values["mains_voltage_l1"], 121.0)
+        self.assertEqual(values["mains_current_l1"], 3.0)
+        self.assertEqual(values["mains_frequency"], 59.99)
+        self.assertEqual(values["mains_voltage_l2"], 120.8)
+        self.assertEqual(values["grid_power_l1"], 500)
+        self.assertEqual(values["grid_power_l2"], 450)
 
     async def test_probe_rejects_out_of_envelope_battery_voltage(self) -> None:
         registers = _ges_holding_registers()

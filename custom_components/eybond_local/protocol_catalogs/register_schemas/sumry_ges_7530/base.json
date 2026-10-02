@@ -4,11 +4,13 @@
   "driver_key": "modbus_catalog",
   "protocol_family": "sumry_ges_7530",
   "blocks": [
-    {
-      "key": "battery",
-      "start": 30000,
-      "count": 3
-    }
+    {"key": "battery", "start": 30000, "count": 3},
+    {"key": "pv", "start": 30011, "count": 6},
+    {"key": "output_l1", "start": 30024, "count": 8},
+    {"key": "output_l2", "start": 30032, "count": 7},
+    {"key": "load_total", "start": 30046, "count": 1},
+    {"key": "mains", "start": 30058, "count": 5},
+    {"key": "grid_ct", "start": 30084, "count": 2}
   ],
   "enum_tables": {},
   "spec_sets": {
@@ -29,6 +31,145 @@
       {
         "key": "battery_percent",
         "register": 30002
+      },
+      {
+        "key": "pv1_voltage",
+        "register": 30011,
+        "divisor": 10,
+        "decimals": 1
+      },
+      {
+        "key": "pv1_current",
+        "register": 30012,
+        "divisor": 10,
+        "decimals": 1
+      },
+      {
+        "key": "pv1_power",
+        "register": 30013
+      },
+      {
+        "key": "pv2_voltage",
+        "register": 30014,
+        "divisor": 10,
+        "decimals": 1
+      },
+      {
+        "key": "pv2_current",
+        "register": 30015,
+        "divisor": 10,
+        "decimals": 1
+      },
+      {
+        "key": "pv2_power",
+        "register": 30016
+      },
+      {
+        "key": "output_voltage_l1",
+        "register": 30024,
+        "divisor": 10,
+        "decimals": 1
+      },
+      {
+        "key": "output_current_l1",
+        "register": 30025,
+        "signed": true,
+        "divisor": 10,
+        "decimals": 1
+      },
+      {
+        "key": "output_frequency",
+        "register": 30026,
+        "divisor": 100,
+        "decimals": 2
+      },
+      {
+        "key": "load_power_l1",
+        "register": 30028,
+        "signed": true
+      },
+      {
+        "key": "output_apparent_power_l1",
+        "register": 30029,
+        "signed": true
+      },
+      {
+        "key": "load_percentage_l1",
+        "register": 30030
+      },
+      {
+        "key": "output_voltage_l2",
+        "register": 30032,
+        "divisor": 10,
+        "decimals": 1
+      },
+      {
+        "key": "output_current_l2",
+        "register": 30033,
+        "signed": true,
+        "divisor": 10,
+        "decimals": 1
+      },
+      {
+        "key": "output_active_power_l2",
+        "register": 30035,
+        "signed": true
+      },
+      {
+        "key": "output_apparent_power_l2",
+        "register": 30036,
+        "signed": true
+      },
+      {
+        "key": "load_percentage_l2",
+        "register": 30037
+      },
+      {
+        "key": "load_power_total",
+        "register": 30046,
+        "signed": true
+      },
+      {
+        "key": "mains_voltage_l1",
+        "register": 30058,
+        "divisor": 10,
+        "decimals": 1
+      },
+      {
+        "key": "mains_current_l1",
+        "register": 30059,
+        "signed": true,
+        "divisor": 10,
+        "decimals": 1
+      },
+      {
+        "key": "mains_frequency",
+        "register": 30060,
+        "divisor": 100,
+        "decimals": 2
+      },
+      {
+        "key": "mains_voltage_l2",
+        "register": 30061,
+        "divisor": 10,
+        "decimals": 1
+      },
+      {
+        "key": "mains_current_l2",
+        "register": 30062,
+        "signed": true,
+        "divisor": 10,
+        "decimals": 1
+      },
+      {
+        "key": "grid_power_l1",
+        "register": 30084,
+        "signed": true
+      },
+      {
+        "key": "grid_power_l2",
+        "register": 30085,
+        "signed": true
       }
     ]
   },
@@ -52,6 +193,179 @@
       "name": "Battery Percent",
       "unit": "%",
       "device_class": "battery",
+      "state_class": "measurement"
+    },
+    {
+      "key": "pv1_voltage",
+      "name": "PV1 Voltage",
+      "unit": "V",
+      "device_class": "voltage",
+      "state_class": "measurement"
+    },
+    {
+      "key": "pv1_current",
+      "name": "PV1 Current",
+      "unit": "A",
+      "device_class": "current",
+      "state_class": "measurement"
+    },
+    {
+      "key": "pv1_power",
+      "name": "PV1 Power",
+      "unit": "W",
+      "device_class": "power",
+      "state_class": "measurement"
+    },
+    {
+      "key": "pv2_voltage",
+      "name": "PV2 Voltage",
+      "unit": "V",
+      "device_class": "voltage",
+      "state_class": "measurement"
+    },
+    {
+      "key": "pv2_current",
+      "name": "PV2 Current",
+      "unit": "A",
+      "device_class": "current",
+      "state_class": "measurement"
+    },
+    {
+      "key": "pv2_power",
+      "name": "PV2 Power",
+      "unit": "W",
+      "device_class": "power",
+      "state_class": "measurement"
+    },
+    {
+      "key": "output_voltage_l1",
+      "name": "Output Voltage L1",
+      "unit": "V",
+      "device_class": "voltage",
+      "state_class": "measurement"
+    },
+    {
+      "key": "output_current_l1",
+      "name": "Output Current L1",
+      "unit": "A",
+      "device_class": "current",
+      "state_class": "measurement"
+    },
+    {
+      "key": "output_frequency",
+      "name": "Output Frequency",
+      "unit": "Hz",
+      "device_class": "frequency",
+      "state_class": "measurement"
+    },
+    {
+      "key": "load_power_l1",
+      "name": "Load Power L1",
+      "unit": "W",
+      "device_class": "power",
+      "state_class": "measurement"
+    },
+    {
+      "key": "output_apparent_power_l1",
+      "name": "Output Apparent Power L1",
+      "unit": "VA",
+      "device_class": "apparent_power",
+      "state_class": "measurement"
+    },
+    {
+      "key": "load_percentage_l1",
+      "name": "Load Percentage L1",
+      "unit": "%",
+      "state_class": "measurement"
+    },
+    {
+      "key": "output_voltage_l2",
+      "name": "Output Voltage L2",
+      "unit": "V",
+      "device_class": "voltage",
+      "state_class": "measurement"
+    },
+    {
+      "key": "output_current_l2",
+      "name": "Output Current L2",
+      "unit": "A",
+      "device_class": "current",
+      "state_class": "measurement"
+    },
+    {
+      "key": "output_active_power_l2",
+      "name": "Output Active Power L2",
+      "unit": "W",
+      "device_class": "power",
+      "state_class": "measurement"
+    },
+    {
+      "key": "output_apparent_power_l2",
+      "name": "Output Apparent Power L2",
+      "unit": "VA",
+      "device_class": "apparent_power",
+      "state_class": "measurement"
+    },
+    {
+      "key": "load_percentage_l2",
+      "name": "Load Percentage L2",
+      "unit": "%",
+      "state_class": "measurement"
+    },
+    {
+      "key": "load_power_total",
+      "name": "Load Power Total",
+      "unit": "W",
+      "device_class": "power",
+      "state_class": "measurement"
+    },
+    {
+      "key": "mains_voltage_l1",
+      "name": "Mains Voltage L1",
+      "unit": "V",
+      "device_class": "voltage",
+      "state_class": "measurement"
+    },
+    {
+      "key": "mains_current_l1",
+      "name": "Mains Current L1",
+      "unit": "A",
+      "device_class": "current",
+      "state_class": "measurement"
+    },
+    {
+      "key": "mains_frequency",
+      "name": "Mains Frequency",
+      "unit": "Hz",
+      "device_class": "frequency",
+      "state_class": "measurement"
+    },
+    {
+      "key": "mains_voltage_l2",
+      "name": "Mains Voltage L2",
+      "unit": "V",
+      "device_class": "voltage",
+      "state_class": "measurement"
+    },
+    {
+      "key": "mains_current_l2",
+      "name": "Mains Current L2",
+      "unit": "A",
+      "device_class": "current",
+      "state_class": "measurement"
+    },
+    {
+      "key": "grid_power_l1",
+      "name": "Grid Power L1 (CT)",
+      "unit": "W",
+      "device_class": "power",
+      "state_class": "measurement"
+    },
+    {
+      "key": "grid_power_l2",
+      "name": "Grid Power L2 (CT)",
+      "unit": "W",
+      "device_class": "power",
       "state_class": "measurement"
     }
   ]
